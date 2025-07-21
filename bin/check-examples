@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "pathname"
+
+examples_dir = Pathname.new(__dir__) / "../examples"
+example_files = examples_dir.glob("**/*.rb")
+
+example_files.each do |file|
+  unless file.executable?
+    puts "#{file.relative_path_from(examples_dir)}: not executable"
+    exit 1
+  end
+
+  first_line = file.read.lines.first&.chomp
+  unless first_line == "#!/usr/bin/env ruby"
+    puts "#{file.relative_path_from(examples_dir)}: missing or incorrect ruby shebang"
+    exit 1
+  end
+end

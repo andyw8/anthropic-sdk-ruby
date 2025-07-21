@@ -132,8 +132,13 @@ end
 desc("Typecheck everything")
 multitask(typecheck: [:"typecheck:steep", :"typecheck:sorbet"])
 
+desc("Lint examples")
+multitask(:"lint:examples") do
+  sh("bin/check-examples")
+end
+
 desc("Lint and typecheck")
-multitask(lint: [:"lint:rubocop", :typecheck])
+multitask(lint: [:"lint:rubocop", :"lint:examples", :typecheck])
 
 desc("Build yard docs")
 multitask(:"build:docs") do
